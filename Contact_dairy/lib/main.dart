@@ -1,10 +1,25 @@
-import 'package:contact_dairy/Utils/route_utils.dart';
-import 'package:contact_dairy/views/screens/Detail_Page.dart';
-import 'package:contact_dairy/views/screens/Home_Page.dart';
+import 'package:contact_dairy/controller/contact_controller.dart';
+import 'package:contact_dairy/views/screen/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'controller/theme_controller.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => themeController(preferences: preferences)),
+        ChangeNotifierProvider(create: (context) => contactController()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,10 +34,9 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.indigo,
           foregroundColor: Colors.white,
-          centerTitle: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(40),
+              bottom: Radius.circular(30),
             ),
           ),
           titleTextStyle: TextStyle(
@@ -31,20 +45,31 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        appBarTheme: AppBarTheme(
           backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,
+          centerTitle: true,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
+            ),
+          ),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        // textTheme: TextTheme(
-        //   bodyMedium: TextStyle(
-        //       fontSize: 22, fontWeight: FontWeight.bold, color: Colors.indigo),
-        // ),
       ),
+      themeMode: Provider.of<themeController>(context).getTheme
+          ? ThemeMode.dark
+          : ThemeMode.system,
       routes: {
-        MyRoutes.HomePage: (context) => const HomePage(),
-        MyRoutes.detailPage: (context) => const DetailPage(),
+        '/': (context) => HomePage(),
       },
     );
   }
