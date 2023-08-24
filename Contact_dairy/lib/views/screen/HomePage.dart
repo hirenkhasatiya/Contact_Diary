@@ -2,9 +2,18 @@ import 'package:contact_dairy/Modals/contact_Modal.dart';
 import 'package:contact_dairy/controller/contact_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  call({required String number}) async {
+    Uri uri = Uri(
+      scheme: 'tel',
+      path: number,
+    );
+    await launchUrl(uri);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,32 +24,43 @@ class HomePage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Consumer<contactController>(
-          builder: (context, Provider, child) => Provider.allContact.isNotEmpty
+          builder: (context, Provider, child) => Provider.getContact.isNotEmpty
               ? ListView.builder(
-                  itemCount: Provider.allContact.length,
+                  itemCount: Provider.getContact.length,
                   itemBuilder: (context, index) {
-                    Contact contact = Provider.allContact[index];
-                    return Card(
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          foregroundImage: NetworkImage(
-                              "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=180"),
-                        ),
-                        title: Text(contact.name),
-                        subtitle: Text(contact.number),
-                        trailing: IconButton(
-                          onPressed: () {
-                            Provider.removeContact(contact: contact);
-                          },
-                          icon: Icon(Icons.delete),
+                    Contact contact = Provider.getContact[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed('Detail_Page', arguments: index);
+                      },
+                      child: Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: Text(contact.name[0].toUpperCase()),
+                          ),
+                          title: Text(contact.name),
+                          subtitle: Text(contact.number),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  call(number: contact.number);
+                                },
+                                icon: Icon(Icons.call),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
                 )
-              : Center(
+              : const Center(
                   child: Text(
                     "Please Add Contact",
                     style: TextStyle(
@@ -67,30 +87,30 @@ class HomePage extends StatelessWidget {
                         children: [
                           TextField(
                             onChanged: (val) => name = val,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "Enter Name",
                               icon: Icon(
                                 Icons.person,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           TextField(
                             keyboardType: TextInputType.number,
                             onChanged: (val) => contact = val,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "Enter Number",
                               icon: Icon(Icons.dialpad),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           TextField(
                             onChanged: (val) => email = val,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "Enter Email",
                               icon: Icon(Icons.email),
                             ),
@@ -122,7 +142,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ));
         },
-        child: Icon(Icons.dialpad_outlined),
+        child: const Icon(Icons.dialpad_outlined),
       ),
     );
   }

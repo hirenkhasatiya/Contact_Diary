@@ -1,5 +1,6 @@
 import 'package:contact_dairy/controller/contact_controller.dart';
 import 'package:contact_dairy/views/screen/HomePage.dart';
+import 'package:contact_dairy/views/screen/detail_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
             create: (context) => themeController(preferences: preferences)),
-        ChangeNotifierProvider(create: (context) => contactController()),
+        ChangeNotifierProvider(
+            create: (context) => contactController(preferences: preferences)),
       ],
       child: const MyApp(),
     ),
@@ -70,6 +72,7 @@ class MyApp extends StatelessWidget {
           : ThemeMode.system,
       routes: {
         '/': (context) => HomePage(),
+        'Detail_Page': (context) => DetailPage(),
       },
     );
   }
