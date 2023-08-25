@@ -15,6 +15,22 @@ class DetailPage extends StatelessWidget {
     await launchUrl(uri);
   }
 
+  sms({required String path}) async {
+    Uri uri = Uri(
+      scheme: 'sms',
+      path: path,
+    );
+    await launchUrl(uri);
+  }
+
+  email({required String email}) async {
+    Uri uri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    await launchUrl(uri);
+  }
+
   @override
   Widget build(BuildContext context) {
     int contact_detail = ModalRoute.of(context)!.settings.arguments as int;
@@ -29,8 +45,10 @@ class DetailPage extends StatelessWidget {
             icon: Icon(Icons.edit),
           ),
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.history),
+            onPressed: () {
+              // Provider.of<contactController>(context).removeContact(contact: );
+            },
+            icon: Icon(Icons.delete),
           ),
           IconButton(
             onPressed: () {},
@@ -66,12 +84,16 @@ class DetailPage extends StatelessWidget {
                         child: Icon(Icons.call),
                       ),
                       FloatingActionButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          sms(path: contact.number);
+                        },
                         child: Icon(Icons.message_outlined),
                       ),
                       FloatingActionButton(
-                        onPressed: () {},
-                        child: Icon(Icons.video_call_outlined),
+                        onPressed: () {
+                          email(email: contact.email);
+                        },
+                        child: Icon(Icons.email),
                       ),
                       FloatingActionButton(
                         onPressed: () {},

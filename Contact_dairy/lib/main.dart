@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.indigo,
           foregroundColor: Colors.white,
-          centerTitle: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(30),

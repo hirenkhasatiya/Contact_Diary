@@ -1,5 +1,6 @@
 import 'package:contact_dairy/Modals/contact_Modal.dart';
 import 'package:contact_dairy/controller/contact_controller.dart';
+import 'package:contact_dairy/controller/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,6 +23,16 @@ class HomePage extends StatelessWidget {
         title: const Text("Contact Diary"),
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
+        actions: [
+          Consumer<themeController>(builder: (context, Provider, child) {
+            return IconButton(
+                onPressed: () {
+                  Provider.changeTheme();
+                },
+                icon: Icon(
+                    Provider.getTheme ? Icons.light_mode : Icons.dark_mode));
+          })
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
