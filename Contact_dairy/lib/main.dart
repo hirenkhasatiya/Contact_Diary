@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: Provider.of<themeController>(context).getTheme
           ? ThemeMode.dark
-          : ThemeMode.system,
+          : ThemeMode.light,
       routes: {
         '/': (context) => HomePage(),
         'Detail_Page': (context) => DetailPage(),

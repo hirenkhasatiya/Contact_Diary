@@ -24,6 +24,10 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.purple,
         foregroundColor: Colors.white,
         actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.star),
+          ),
           Consumer<themeController>(builder: (context, Provider, child) {
             return IconButton(
                 onPressed: () {
@@ -31,7 +35,7 @@ class HomePage extends StatelessWidget {
                 },
                 icon: Icon(
                     Provider.getTheme ? Icons.light_mode : Icons.dark_mode));
-          })
+          }),
         ],
       ),
       body: Padding(

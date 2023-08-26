@@ -44,16 +44,28 @@ class DetailPage extends StatelessWidget {
             onPressed: () {},
             icon: Icon(Icons.edit),
           ),
-          IconButton(
-            onPressed: () {
-              // Provider.of<contactController>(context).removeContact(contact: );
-            },
-            icon: Icon(Icons.delete),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings),
-          ),
+          Consumer<contactController>(builder: (context, Provider, child) {
+            Contact contact = Provider.getContact[contact_detail];
+            return PopupMenuButton(
+              offset: Offset(70, 50),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  child: Text("settings"),
+                ),
+                const PopupMenuItem(
+                  child: Text("Share Contact"),
+                ),
+                PopupMenuItem(
+                  onTap: () {
+                    debugPrint(contact.number);
+                    Provider.removeContact(contact: contact);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Delete Contact"),
+                ),
+              ],
+            );
+          })
         ],
       ),
       body: Padding(
