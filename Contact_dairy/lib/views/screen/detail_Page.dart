@@ -2,6 +2,7 @@ import 'package:contact_dairy/Modals/contact_Modal.dart';
 import 'package:contact_dairy/controller/contact_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends StatelessWidget {
@@ -57,8 +58,8 @@ class DetailPage extends StatelessWidget {
                 ),
                 PopupMenuItem(
                   onTap: () {
-                    debugPrint(contact.number);
-                    Provider.removeContact(contact: contact);
+                    // debugPrint(Provider.);
+                    // Provider.removeContact(contact: contact);
                     Navigator.of(context).pop();
                   },
                   child: Text("Delete Contact"),
@@ -108,7 +109,10 @@ class DetailPage extends StatelessWidget {
                         child: Icon(Icons.email),
                       ),
                       FloatingActionButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await Share.share(
+                              "${contact.name} \n\n${contact.number}");
+                        },
                         child: Icon(Icons.share),
                       ),
                     ],
